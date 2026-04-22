@@ -11,9 +11,15 @@ $sql = "SELECT * FROM aluno WHERE cpf = '$cpf' AND senha = '$senha'";
 
 try {
     // Executando a consulta
-    $resultado = $conexao->query($sql);
+    $stmt = $conexao->prepare($sql);
 
-    if ( $linha = $resultado->fetch() ) { // fetch() retorna false se não tiver linhas
+    $stmt->bindParam(':cpf', $cpf);
+    $stmt->bindParam(':senha', $senha);
+
+    $stmt->execute();
+
+
+    if ( $linha = $stmt->fetch() ) { // fetch() retorna false se não tiver linhas
         echo "Login bem-sucedido!";
     } else {
         echo "CPF ou senha incorretos.";
